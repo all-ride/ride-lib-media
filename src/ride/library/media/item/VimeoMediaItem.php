@@ -8,7 +8,7 @@ use ride\library\media\exception\MediaException;
 /**
  * Media implementation for a Vimeo item
  */
-class VimeoMediaItem extends AbstractMedia {
+class VimeoMediaItem extends AbstractMediaItem {
 
     /**
      * Type of this video

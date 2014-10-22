@@ -96,9 +96,12 @@ class SoundcloudMediaItem extends AbstractMediaItem {
     		throw new MediaException('Could not resolve ' . $url . ' in the Soundcloud service');
         }
 
-        list($url, $parameters) = explode('.json', $response->getHeader('location'), 2);
+        list($id, $parameters) = explode('.json', $response->getHeader('location'), 2);
 
-        return str_replace('http://api.soundcloud.com/tracks/', '', $url);
+        $id = str_replace('http://api.soundcloud.com/tracks/', '', $id);
+        $id = str_replace('https://api.soundcloud.com/tracks/', '', $id);
+
+        return $id;
     }
 
     /**

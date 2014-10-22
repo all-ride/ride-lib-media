@@ -2,7 +2,7 @@
     "name": "ride/lib-media",
     "description": "Library for abstraction of media services in the Ride framework",
     "license": "MIT",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "authors": [
         {
             "name": "Joris Vandeweerd",

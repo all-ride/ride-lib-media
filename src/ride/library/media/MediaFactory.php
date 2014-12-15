@@ -8,6 +8,12 @@ namespace ride\library\media;
 interface MediaFactory {
 
     /**
+     * Gets the HTTP client used by the media library
+     * @return \ride\library\http\client\Client
+     */
+    public function getHttpClient();
+
+    /**
      * Creates a media object from a URL
      * @param string $url URL to a item of a media service
      * @return MediaItem Instance of the media item

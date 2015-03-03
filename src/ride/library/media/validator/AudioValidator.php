@@ -10,6 +10,12 @@ use ride\library\media\item\MediaItem;
 class AudioValidator extends MediaValidator {
 
     /**
+     * Machine name of this validator
+     * @var string
+     */
+    const NAME = 'audio';
+
+    /**
      * Checks the resolved media item
      * @param \ride\library\media\item\MediaItem $mediaItem
      * @return boolean

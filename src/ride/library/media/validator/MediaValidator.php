@@ -14,6 +14,12 @@ use ride\library\validation\validator\RequiredValidator;
 class MediaValidator extends AbstractValidator {
 
     /**
+     * Machine name of this validator
+     * @var string
+     */
+    const NAME = 'media';
+
+    /**
      * Code of the error when the video URL is not supported
      * @var string
      */

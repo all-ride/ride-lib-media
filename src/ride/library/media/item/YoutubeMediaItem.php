@@ -22,7 +22,6 @@ class YoutubeMediaItem extends AbstractMediaItem {
      */
     protected $clientId;
 
-
     /**
      * Sets the client id for the Soundcloud API
      * @var string
@@ -38,6 +37,7 @@ class YoutubeMediaItem extends AbstractMediaItem {
             $this->id = $this->parseUrl($this->url);
         }
     }
+
     /**
      * Gets whether this media item is from a video service
      * @return boolean
@@ -135,7 +135,7 @@ class YoutubeMediaItem extends AbstractMediaItem {
      */
     public function getThumbnailUrl(array $options = null) {
         $thumbnails = $this->getProperty('thumbnails');
-        //return 'https://img.youtube.com/vi/' . $this->id . '/hqdefault.jpg';
+
         return $thumbnails['default']['url'];
     }
 
@@ -145,14 +145,12 @@ class YoutubeMediaItem extends AbstractMediaItem {
      */
     protected function loadProperties() {
         $properties = array();
-        //$response = $this->httpClient->get('http://gdata.youtube.com/feeds/api/videos/' . $this->id . '?v=2&alt=jsonc');
         $response = $this->httpClient->get('https://www.googleapis.com/youtube/v3/videos?id=' . $this->id . '&key=' . $this->clientId .'&part=snippet');
 
         if ($response->getStatusCode() == Response::STATUS_CODE_OK) {
             $jsonDecoded = json_decode($response->getBody(), true);
 
             if ($jsonDecoded !== false) {
-
                 $items = $jsonDecoded['items'];
                 $snippet = array_shift($items);
                 $properties = $snippet['snippet'];

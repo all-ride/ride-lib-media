@@ -17,6 +17,28 @@ class YoutubeMediaItem extends AbstractMediaItem {
     const TYPE = 'youtube';
 
     /**
+     * Client id for the youtube API
+     * @var string
+     */
+    protected $clientId;
+
+
+    /**
+     * Sets the client id for the Soundcloud API
+     * @var string
+     */
+    public function setClientId($clientId) {
+        if (!is_string($clientId) || !$clientId) {
+            throw new MediaException('Could not initialize the Youtube media item: empty client id provided');
+        }
+
+        $this->clientId = $clientId;
+
+        if (isset($this->url)) {
+            $this->id = $this->parseUrl($this->url);
+        }
+    }
+    /**
      * Gets whether this media item is from a video service
      * @return boolean
      */
@@ -112,7 +134,9 @@ class YoutubeMediaItem extends AbstractMediaItem {
      * @return string
      */
     public function getThumbnailUrl(array $options = null) {
-        return 'https://img.youtube.com/vi/' . $this->id . '/hqdefault.jpg';
+        $thumbnails = $this->getProperty('thumbnails');
+        //return 'https://img.youtube.com/vi/' . $this->id . '/hqdefault.jpg';
+        return $thumbnails['default']['url'];
     }
 
     /**
@@ -121,13 +145,17 @@ class YoutubeMediaItem extends AbstractMediaItem {
      */
     protected function loadProperties() {
         $properties = array();
+        //$response = $this->httpClient->get('http://gdata.youtube.com/feeds/api/videos/' . $this->id . '?v=2&alt=jsonc');
+        $response = $this->httpClient->get('https://www.googleapis.com/youtube/v3/videos?id=' . $this->id . '&key=' . $this->clientId .'&part=snippet');
 
-        $response = $this->httpClient->get('http://gdata.youtube.com/feeds/api/videos/' . $this->id . '?v=2&alt=jsonc');
         if ($response->getStatusCode() == Response::STATUS_CODE_OK) {
             $jsonDecoded = json_decode($response->getBody(), true);
 
             if ($jsonDecoded !== false) {
-                $properties = $jsonDecoded['data'];
+
+                $items = $jsonDecoded['items'];
+                $snippet = array_shift($items);
+                $properties = $snippet['snippet'];
             }
         }
 

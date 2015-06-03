@@ -3,7 +3,7 @@
 namespace ride\library\media;
 
 use ride\library\http\client\Client;
-use ride\library\media\exception\MediaException;
+use ride\library\media\exception\UnsupportedMediaException;
 use ride\library\media\item\SoundcloudMediaItem;
 use ride\library\media\item\VimeoMediaItem;
 use ride\library\media\item\YoutubeMediaItem;
@@ -51,7 +51,7 @@ class SimpleMediaFactory implements MediaFactory {
         } elseif (stripos($url, 'soundcloud') !== false) {
             $mediaItem = new SoundcloudMediaItem($this->httpClient, null, $url);
         } else {
-            throw new MediaException('Could not create a media item for ' . $url . ': unsupported type or invalid URL provided');
+            throw new UnsupportedMediaException('Could not create a media item for ' . $url . ': unsupported type or invalid URL provided');
         }
 
         return $mediaItem;
@@ -78,7 +78,7 @@ class SimpleMediaFactory implements MediaFactory {
 
                 break;
             default:
-                throw new VideoException('Could not get the media item: unsupported type ' . $type);
+                throw new UnsupportedMediaException('Could not get the media item: unsupported type ' . $type);
 
                 break;
         }

@@ -23,6 +23,10 @@ class EmbedMediaItem extends AbstractMediaItem {
      * URL is invalid
      */
     protected function parseUrl($url) {
+        if (!is_string($url) || !$url) {
+            throw new MediaException('Provided url is empty or not a string');
+        }
+
         return $url;
     }
 

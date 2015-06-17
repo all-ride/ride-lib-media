@@ -8,6 +8,9 @@ use ride\library\media\item\SoundcloudMediaItem;
 use ride\library\media\item\VimeoMediaItem;
 use ride\library\media\item\YoutubeMediaItem;
 use ride\library\media\factory\VimeoMediaItemFactory;
+use ride\library\media\factory\SoundcloudMediaItemFactory;
+use ride\library\media\factory\YoutubeMediaItemFactory;
+use ride\library\media\factory\EmbedMediaItemFactory;
 
 /**
  * Simple media factory
@@ -21,12 +24,19 @@ class SimpleMediaFactory implements MediaFactory {
     protected $httpClient;
 
     /**
+     * Instance of the dependency injector
+     * @var \ride\library\dependency\DependencyInjector
+     */
+    protected $dependencyInjector;
+
+    /**
      * Constructs a new media factory
      * @param \ride\library\http\client\Client $httpClient
      * @return null
      */
-    public function __construct(Client $httpClient) {
+    public function __construct(Client $httpClient, DependencyInjector $dependencyInjector) {
         $this->httpClient = $httpClient;
+        $this->dependencyInjector = $dependencyInjector;
     }
 
     /**
@@ -45,17 +55,20 @@ class SimpleMediaFactory implements MediaFactory {
      * instance could be created
      */
     public function createMediaItem($url) {
-        if (stripos($url, 'youtu') !== false) {
-            $mediaItem = new YoutubeMediaItem($this->httpClient, null, $url);
-        } elseif (stripos($url, 'vimeo') !== false) {
-            $mediaItem = new VimeoMediaItem($this->httpClient, null, $url);
-        } elseif (stripos($url, 'soundcloud') !== false) {
-            $mediaItem = new SoundcloudMediaItem($this->httpClient, null, $url);
-        } else {
-            throw new UnsupportedMediaException('Could not create a media item for ' . $url . ': unsupported type or invalid URL provided');
+        $mediaItemFactories = array(
+            new SoundcloudMediaItemFactory($this->dependencyInjector),
+            new YoutubeMediaItemFactory($this->dependencyInjector),
+            new VimeoMediaItemFactory($this->dependencyInjector)
+        );
+
+        foreach($mediaItemFactories as $mediaItemFactory) {
+            if ($mediaItemFactory->isValidUrl($url)) {
+                return $mediaItemFactory->createFromUrl($url);
+            }
         }
 
-        return $mediaItem;
+        $embedFactory = new EmbedMediaItemFactory($this->dependencyInjector);
+        return $embedFactory->createFromUrl($url);
     }
 
     /**

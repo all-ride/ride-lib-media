@@ -7,6 +7,7 @@ use ride\library\media\exception\UnsupportedMediaException;
 use ride\library\media\item\SoundcloudMediaItem;
 use ride\library\media\item\VimeoMediaItem;
 use ride\library\media\item\YoutubeMediaItem;
+use ride\library\media\factory\VimeoMediaItemFactory;
 
 /**
  * Simple media factory

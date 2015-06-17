@@ -2,7 +2,7 @@
 
 namespace ride\library\media\factory;
 
-use ride\library\dependency\DependencyInjector;
+use \ride\library\http\client\Client;
 
 /**
  * SoundcloudMediaItemFactory
@@ -10,10 +10,15 @@ use ride\library\dependency\DependencyInjector;
 class SoundcloudMediaItemFactory extends AbstractMediaItemFactory {
 
     /**
+     * @var string $clientId
+     */
+    protected $clientId;
+
+    /**
      * {@inheritdoc}
      */
-    public function __construct(DependencyInjector $dependencyInjector) {
-        parent::__construct($dependencyInjector);
+    public function __construct(Client $httpClient) {
+        parent::__construct($httpClient);
         $this->mediaItemClass = 'ride\library\media\item\SoundcloudMediaItem';
     }
 
@@ -25,13 +30,20 @@ class SoundcloudMediaItemFactory extends AbstractMediaItemFactory {
     }
 
     /**
+     * @param string $clientId The client Id
+     *
+     * Set the client Id
+     */
+    public function setClientId($clientId) {
+        $this->clientId = $clientId;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function createFormUrl($url) {
         $mediaItem = parent::createFormUrl($url);
-        $config = $this->dependencyInjector->get('ride\\library\\config\\Config');
-        $soundcloundClientId = $config->get('soundcloud.client.id');
-        $mediaItem->setClientId($soundcloundClientId);
+        $mediaItem->setClientId($this->clientId);
 
         return $mediaItem;
     }

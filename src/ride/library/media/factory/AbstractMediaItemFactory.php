@@ -2,8 +2,7 @@
 
 namespace ride\library\media\factory;
 
-use ride\library\http\client\Client as HttpClient;
-use ride\library\dependency\DependencyInjector;
+use \ride\library\http\client\Client;
 
 /**
  * Abstract implementation of a MediaItem factory
@@ -21,16 +20,10 @@ abstract class AbstractMediaItemFactory implements MediaItemFactory {
     protected $httpClient;
 
     /**
-     * @param DependencyInjector $dependencyInjector
-     */
-    protected $dependencyInjector;
-
-    /**
      * {@inheritdoc}
      */
-    public function __construct(DependencyInjector $dependencyInjector) {
-        $this->httpClient = $dependencyInjector->get('ride\\library\\http\\client\\Client');
-        $this->dependencyInjector = $dependencyInjector;
+    public function __construct(Client $httpClient) {
+        $this->httpClient = $httpClient;
     }
 
     /**

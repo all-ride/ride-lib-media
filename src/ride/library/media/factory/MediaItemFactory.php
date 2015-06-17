@@ -2,7 +2,7 @@
 
 namespace ride\library\media\factory;
 
-use ride\library\dependency\DependencyInjector;
+use \ride\library\http\client\Client;
 
 /**
  * Interface for a MediaItem facotry
@@ -10,11 +10,11 @@ use ride\library\dependency\DependencyInjector;
 interface MediaItemFactory {
 
     /**
-     * @param DependencyInjector $dependencyInjector
+     * @param Client $httpClient
      *
      * Constructs a MediaItemFactory
      */
-    public function __construct(DependencyInjector $dependencyInjector);
+    public function __construct(Client $httpClient);
 
     /**
      * @param string $url The url of the media item

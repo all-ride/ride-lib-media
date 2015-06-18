@@ -36,3 +36,19 @@ abstract protected function loadProperties();
 ```
 
 The ``parseUrl`` method will take a given URL and parse it for this specific MediaItem implementation. It can be assumed that this URL is parseable because of the check done in the MediaItemFactory.
+
+### Code sample
+
+```php
+use ride\library\media\SimpleMediaFactory;
+use ride\library\http\client\Client;
+
+$httpClient = // get http Client;
+$simpleMediaFactory = new SimpleMediaFactory($httpClient);
+
+// create a MediaItem without a clientId (eg. Vimeo)
+$vimeoMediaItem = $simpleMediaFactory->createMediaItem('https://vimeo.com/130848841');
+
+// create a MediaItem with a clientId (eg. Youtube)
+$youtubeMediaItem = $simpleMediaFactory->createMediaItem('https://www.youtube.com/watch?v=njos57IJf-0', '1dfs308sa48SD8xcvv5');
+```

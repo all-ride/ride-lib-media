@@ -10,11 +10,6 @@ use \ride\library\http\client\Client;
 class SoundcloudMediaItemFactory extends AbstractMediaItemFactory {
 
     /**
-     * @var string $clientId
-     */
-    protected $clientId;
-
-    /**
      * {@inheritdoc}
      */
     public function __construct(Client $httpClient) {
@@ -32,8 +27,12 @@ class SoundcloudMediaItemFactory extends AbstractMediaItemFactory {
     /**
      * {@inheritdoc}
      */
-    public function createFormUrl($url) {
-        $mediaItem = parent::createFormUrl($url);
+    public function createFromUrl($url) {
+        if (!$this->clientId) {
+            throw new MediaException('soundcloud.client.id parameter not set');
+        }
+
+        $mediaItem = parent::createFromUrl($url);
         $mediaItem->setClientId($this->clientId);
 
         return $mediaItem;

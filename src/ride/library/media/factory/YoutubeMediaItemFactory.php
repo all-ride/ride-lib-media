@@ -3,16 +3,12 @@
 namespace ride\library\media\factory;
 
 use \ride\library\http\client\Client;
+use ride\library\media\exception\MediaException;
 
 /**
  * YoutubeMediaItemFactory
  */
 class YoutubeMediaItemFactory extends AbstractMediaItemFactory {
-
-    /**
-     * @var string $clientId
-     */
-    protected $clientId;
 
     /**
      * {@inheritdoc}
@@ -32,8 +28,12 @@ class YoutubeMediaItemFactory extends AbstractMediaItemFactory {
     /**
      * {@inheritdoc}
      */
-    public function createFormUrl($url) {
-        $mediaItem = parent::createFormUrl($url);
+    public function createFromUrl($url) {
+        if (!$this->clientId) {
+            throw new MediaException('google.api.key parameter not set');
+        }
+
+        $mediaItem = parent::createFromUrl($url);
         $mediaItem->setClientId($this->clientId);
 
         return $mediaItem;

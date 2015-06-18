@@ -32,4 +32,11 @@ interface MediaItemFactory {
      */
     public function createFromUrl($url);
 
+    /**
+     * @param string $clientId The client Id
+     *
+     * Set the client Id
+     */
+    public function setClientId($clientId);
+
 }

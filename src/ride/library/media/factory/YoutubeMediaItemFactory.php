@@ -30,15 +30,6 @@ class YoutubeMediaItemFactory extends AbstractMediaItemFactory {
     }
 
     /**
-     * @param string $clientId The client Id
-     *
-     * Set the client Id
-     */
-    public function setClientId($clientId) {
-        $this->clientId = $clientId;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function createFormUrl($url) {

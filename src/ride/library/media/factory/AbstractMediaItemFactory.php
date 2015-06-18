@@ -20,6 +20,11 @@ abstract class AbstractMediaItemFactory implements MediaItemFactory {
     protected $httpClient;
 
     /**
+     * @param string $clientId
+     */
+    protected $clientId=null;
+
+    /**
      * {@inheritdoc}
      */
     public function __construct(Client $httpClient) {
@@ -31,5 +36,12 @@ abstract class AbstractMediaItemFactory implements MediaItemFactory {
      */
     public function createFromUrl($url) {
         return new $this->mediaItemClass($this->httpClient, null, $url);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setClientId($clientId) {
+        $this->clientId = $clientId;
     }
 }

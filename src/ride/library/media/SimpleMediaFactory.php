@@ -54,7 +54,7 @@ class SimpleMediaFactory implements MediaFactory {
      * @throws \ride\library\media\exception\MediaException when no media item
      * instance could be created
      */
-    public function createMediaItem($url) {
+    public function createMediaItem($url, $clientId=null) {
         $mediaItemFactories = array(
             new SoundcloudMediaItemFactory($this->dependencyInjector),
             new YoutubeMediaItemFactory($this->dependencyInjector),
@@ -63,6 +63,10 @@ class SimpleMediaFactory implements MediaFactory {
 
         foreach($mediaItemFactories as $mediaItemFactory) {
             if ($mediaItemFactory->isValidUrl($url)) {
+                if ($clientId) {
+                    $mediaItemFactory->setClientId($clientId);
+                }
+
                 return $mediaItemFactory->createFromUrl($url);
             }
         }

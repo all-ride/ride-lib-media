@@ -3,6 +3,7 @@
 namespace ride\library\media\factory;
 
 use \ride\library\http\client\Client;
+use ride\library\media\exception\MediaException;
 
 /**
  * SoundcloudMediaItemFactory

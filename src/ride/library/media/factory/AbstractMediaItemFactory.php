@@ -10,7 +10,7 @@ use \ride\library\http\client\Client;
 abstract class AbstractMediaItemFactory implements MediaItemFactory {
 
     /**
-     * @param mixed $mediaItemId The mediaItem class assosciated with this factory
+     * @param mixed $mediaItemId The MediaItem class assosciated with this factory
      */
     protected $mediaItemClass = null;
 
@@ -22,7 +22,7 @@ abstract class AbstractMediaItemFactory implements MediaItemFactory {
     /**
      * @param string $clientId
      */
-    protected $clientId=null;
+    protected $clientId = null;
 
     /**
      * {@inheritdoc}

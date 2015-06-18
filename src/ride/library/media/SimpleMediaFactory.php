@@ -24,19 +24,12 @@ class SimpleMediaFactory implements MediaFactory {
     protected $httpClient;
 
     /**
-     * Instance of the dependency injector
-     * @var \ride\library\dependency\DependencyInjector
-     */
-    protected $dependencyInjector;
-
-    /**
      * Constructs a new media factory
      * @param \ride\library\http\client\Client $httpClient
      * @return null
      */
-    public function __construct(Client $httpClient, DependencyInjector $dependencyInjector) {
+    public function __construct(Client $httpClient) {
         $this->httpClient = $httpClient;
-        $this->dependencyInjector = $dependencyInjector;
     }
 
     /**
@@ -56,9 +49,9 @@ class SimpleMediaFactory implements MediaFactory {
      */
     public function createMediaItem($url, $clientId=null) {
         $mediaItemFactories = array(
-            new SoundcloudMediaItemFactory($this->dependencyInjector),
-            new YoutubeMediaItemFactory($this->dependencyInjector),
-            new VimeoMediaItemFactory($this->dependencyInjector)
+            new SoundcloudMediaItemFactory($this->httpClient),
+            new YoutubeMediaItemFactory($this->httpClient),
+            new VimeoMediaItemFactory($this->httpClient)
         );
 
         foreach($mediaItemFactories as $mediaItemFactory) {
@@ -71,7 +64,7 @@ class SimpleMediaFactory implements MediaFactory {
             }
         }
 
-        $embedFactory = new EmbedMediaItemFactory($this->dependencyInjector);
+        $embedFactory = new EmbedMediaItemFactory($this->httpClient);
         return $embedFactory->createFromUrl($url);
     }
 

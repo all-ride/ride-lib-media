@@ -7,6 +7,10 @@ use ride\library\media\exception\UnsupportedMediaException;
 use ride\library\media\item\SoundcloudMediaItem;
 use ride\library\media\item\VimeoMediaItem;
 use ride\library\media\item\YoutubeMediaItem;
+use ride\library\media\factory\VimeoMediaItemFactory;
+use ride\library\media\factory\SoundcloudMediaItemFactory;
+use ride\library\media\factory\YoutubeMediaItemFactory;
+use ride\library\media\factory\EmbedMediaItemFactory;
 
 /**
  * Simple media factory
@@ -43,18 +47,25 @@ class SimpleMediaFactory implements MediaFactory {
      * @throws \ride\library\media\exception\MediaException when no media item
      * instance could be created
      */
-    public function createMediaItem($url) {
-        if (stripos($url, 'youtu') !== false) {
-            $mediaItem = new YoutubeMediaItem($this->httpClient, null, $url);
-        } elseif (stripos($url, 'vimeo') !== false) {
-            $mediaItem = new VimeoMediaItem($this->httpClient, null, $url);
-        } elseif (stripos($url, 'soundcloud') !== false) {
-            $mediaItem = new SoundcloudMediaItem($this->httpClient, null, $url);
-        } else {
-            throw new UnsupportedMediaException('Could not create a media item for ' . $url . ': unsupported type or invalid URL provided');
+    public function createMediaItem($url, $clientId=null) {
+        $mediaItemFactories = array(
+            new SoundcloudMediaItemFactory($this->httpClient),
+            new YoutubeMediaItemFactory($this->httpClient),
+            new VimeoMediaItemFactory($this->httpClient)
+        );
+
+        foreach($mediaItemFactories as $mediaItemFactory) {
+            if ($mediaItemFactory->isValidUrl($url)) {
+                if ($clientId) {
+                    $mediaItemFactory->setClientId($clientId);
+                }
+
+                return $mediaItemFactory->createFromUrl($url);
+            }
         }
 
-        return $mediaItem;
+        $embedFactory = new EmbedMediaItemFactory($this->httpClient);
+        return $embedFactory->createFromUrl($url);
     }
 
     /**

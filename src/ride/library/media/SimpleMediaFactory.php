@@ -51,7 +51,8 @@ class SimpleMediaFactory implements MediaFactory {
         $mediaItemFactories = array(
             new SoundcloudMediaItemFactory($this->httpClient),
             new YoutubeMediaItemFactory($this->httpClient),
-            new VimeoMediaItemFactory($this->httpClient)
+            new VimeoMediaItemFactory($this->httpClient),
+            new ImageMediaItemFactory($this->httpClient)
         );
 
         foreach($mediaItemFactories as $mediaItemFactory) {
@@ -86,6 +87,10 @@ class SimpleMediaFactory implements MediaFactory {
                 break;
             case VimeoMediaItem::TYPE:
                 $mediaItem = new VimeoMediaItem($this->httpClient, $id);
+
+                break;
+            case ImageMediaItem::TYPE:
+                $mediaItem = new ImageMediaItem($this->httpClient, $id);
 
                 break;
             default:

@@ -105,7 +105,12 @@ abstract class AbstractMediaItem implements MediaItem {
      * @return string
      */
     public function getTitle() {
-        return $this->getProperty('title');
+        $title = $this->getProperty('title');
+        if (!$title) {
+            $title = $this->getId();
+        }
+        
+        return $title;
     }
 
     /**

@@ -136,7 +136,7 @@ class YoutubeMediaItem extends AbstractMediaItem {
     public function getThumbnailUrl(array $options = null) {
         $thumbnails = $this->getProperty('thumbnails');
 
-        return $thumbnails['default']['url'];
+        return $thumbnails['standard']['url'];
     }
 
     /**

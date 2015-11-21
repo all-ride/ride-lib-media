@@ -10,17 +10,18 @@ use \ride\library\http\client\Client;
 abstract class AbstractMediaItemFactory implements MediaItemFactory {
 
     /**
-     * @param mixed $mediaItemId The MediaItem class assosciated with this factory
+     * The MediaItem class assosciated with this factory
+     * @var string
      */
     protected $mediaItemClass = null;
 
     /**
-     * @param Client $httpClient
+     * @var Client
      */
     protected $httpClient;
 
     /**
-     * @param string $clientId
+     * @var string
      */
     protected $clientId = null;
 

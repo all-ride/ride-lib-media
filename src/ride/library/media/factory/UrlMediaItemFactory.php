@@ -5,16 +5,17 @@ namespace ride\library\media\factory;
 use \ride\library\http\client\Client;
 
 /**
- * EmbedMediaItemFactory
+ * MediaItemFactory for random URL's
  */
-class EmbedMediaItemFactory extends AbstractMediaItemFactory {
+class UrlMediaItemFactory extends AbstractMediaItemFactory {
 
     /**
      * {@inheritdoc}
      */
     public function __construct(Client $httpClient) {
         parent::__construct($httpClient);
-        $this->mediaItemClass = 'ride\library\media\item\EmbedMediaItem';
+
+        $this->mediaItemClass = 'ride\library\media\item\UrlMediaItem';
     }
 
     /**
@@ -23,4 +24,5 @@ class EmbedMediaItemFactory extends AbstractMediaItemFactory {
     public function isValidUrl($url) {
         return true;
     }
+
 }

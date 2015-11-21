@@ -93,6 +93,22 @@ abstract class AbstractMediaItem implements MediaItem {
     }
 
     /**
+     * Gets whether this media item is an image
+     * @return boolean
+     */
+    public function isImage() {
+        return false;
+    }
+
+    /**
+     * Gets whether this media item is a PDF
+     * @return boolean
+     */
+    public function isPdf() {
+        return false;
+    }
+
+    /**
      * Gets the id of this video
      * @return string
      */
@@ -105,7 +121,12 @@ abstract class AbstractMediaItem implements MediaItem {
      * @return string
      */
     public function getTitle() {
-        return $this->getProperty('title');
+        $title = $this->getProperty('title');
+        if (!$title) {
+            $title = $this->getId();
+        }
+        
+        return $title;
     }
 
     /**

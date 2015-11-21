@@ -2,7 +2,7 @@
 
 namespace ride\library\media\item;
 
-use \ride\library\http\client\Client;
+use ride\library\http\client\Client;
 
 /**
  * Interface for a item of a media service like Youtube, Vimeo, Soundcloud ...
@@ -26,10 +26,22 @@ interface MediaItem {
     public function getType();
 
     /**
-     * Gets whether this media item is from a audio service
+     * Gets whether this media item is from an audio service
      * @return boolean
      */
     public function isAudio();
+
+    /**
+     * Gets whether this media item is a document
+     * @return boolean
+     */
+    public function isDocument();
+
+    /**
+     * Gets whether this media item is from an image service
+     * @return boolean
+     */
+    public function isImage();
 
     /**
      * Gets whether this media item is from a video service

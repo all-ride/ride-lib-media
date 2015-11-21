@@ -69,6 +69,22 @@ abstract class AbstractMediaItem implements MediaItem {
     }
 
     /**
+     * Gets whether this media item is a PDF
+     * @return boolean
+     */
+    public function isDocument() {
+        return false;
+    }
+
+    /**
+     * Gets whether this media item is from an image service
+     * @return boolean
+     */
+    public function isImage() {
+        return false;
+    }
+
+    /**
      * Gets whether this media item is from a video service
      * @return boolean
      */

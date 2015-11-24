@@ -20,7 +20,7 @@ interface MediaFactory {
      * @throws \ride\library\video\exception\MediaException when no media
      * instance could be created
      */
-    public function createMediaItem($url, $clientId=null);
+    public function createMediaItem($url);
 
     /**
      * Gets a media item by it's type and id

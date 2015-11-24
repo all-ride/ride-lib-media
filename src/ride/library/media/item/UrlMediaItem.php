@@ -77,6 +77,14 @@ class UrlMediaItem extends AbstractMediaItem {
     }
 
     /**
+     * Gets the MIME of this URL
+     * @return string
+     */
+    public function getMime() {
+        return $this->getProperty('mime');
+    }
+
+    /**
      * Gets the URL of this audio
      * @return string
      */
@@ -107,7 +115,7 @@ class UrlMediaItem extends AbstractMediaItem {
      * @return array
      */
     protected function loadProperties() {
-        $request = $this->httpClient->createRequest('GET', $this->getId());
+        $request = $this->httpClient->createRequest('HEAD', $this->getId());
         $request->setFollowLocation(true);
 
         $response = $this->httpClient->sendRequest($request);
@@ -117,6 +125,11 @@ class UrlMediaItem extends AbstractMediaItem {
 
         $mime = $response->getHeader(Header::HEADER_CONTENT_TYPE);
         if ($mime === 'text/html') {
+            $request = $this->httpClient->createRequest('GET', $this->getId());
+            $request->setFollowLocation(true);
+
+            $response = $this->httpClient->sendRequest($request);
+
             $properties = $this->getPropertiesFromHtml($response->getBody());
             $properties['isDocument'] = true;
         } else {
@@ -132,7 +145,27 @@ class UrlMediaItem extends AbstractMediaItem {
                     break;
                 case 'application':
                     switch ($mimeTokens[1]) {
+                        case 'ms-excel':
+                        case 'msword':
                         case 'pdf':
+                        case 'vnd.ms-excel.sheet.macroEnabled.12':
+                        case 'vnd.ms-excel.template.macroEnabled.12':
+                        case 'vnd.ms-excel.addin.macroEnabled.12':
+                        case 'vnd.ms-excel.sheet.binary.macroEnabled.12':
+                        case 'vnd.ms-powerpoint':
+                        case 'vnd.ms-powerpoint.addin.macroEnabled.12':
+                        case 'vnd.ms-powerpoint.presentation.macroEnabled.12':
+                        case 'vnd.ms-powerpoint.template.macroEnabled.12':
+                        case 'vnd.ms-powerpoint.slideshow.macroEnabled.12':
+                        case 'vnd.ms-word.document.macroEnabled.12':
+                        case 'vnd.ms-word.template.macroEnabled.12':
+                        case 'vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                        case 'vnd.openxmlformats-officedocument.spreadsheetml.template':
+                        case 'vnd.openxmlformats-officedocument.presentationml.presentation':
+                        case 'vnd.openxmlformats-officedocument.presentationml.template':
+                        case 'vnd.openxmlformats-officedocument.presentationml.slideshow':
+                        case 'vnd.openxmlformats-officedocument.wordprocessingml.document':
+                        case 'vnd.openxmlformats-officedocument.wordprocessingml.template':
                             $properties['isDocument'] = true;
 
                             break;
@@ -150,6 +183,8 @@ class UrlMediaItem extends AbstractMediaItem {
                     break;
             }
         }
+
+        $properties['mime'] = $mime;
 
         return $properties;
     }

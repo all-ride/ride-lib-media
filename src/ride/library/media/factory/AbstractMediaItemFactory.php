@@ -10,12 +10,6 @@ use \ride\library\http\client\Client;
 abstract class AbstractMediaItemFactory implements MediaItemFactory {
 
     /**
-     * The MediaItem class assosciated with this factory
-     * @var string
-     */
-    protected $mediaItemClass = null;
-
-    /**
      * @var Client
      */
     protected $httpClient;
@@ -35,14 +29,34 @@ abstract class AbstractMediaItemFactory implements MediaItemFactory {
     /**
      * {@inheritdoc}
      */
-    public function createFromUrl($url) {
-        return new $this->mediaItemClass($this->httpClient, null, $url);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setClientId($clientId) {
         $this->clientId = $clientId;
     }
+
+    /**
+     * Creates a media item from the provided URL
+     * @param string $url URL of the media item
+     * @return \ride\library\media\item\MediaItem
+     */
+    public function createFromUrl($url) {
+        return $this->createMediaItem(null, $url);
+    }
+
+    /**
+     * Creates a media item with the provided id
+     * @param string $id Id of the media item in the service
+     * @return \ride\library\media\item\MediaItem
+     */
+    public function createFromId($id) {
+        return $this->createMediaItem($id);
+    }
+
+    /**
+     * Creates a media item
+     * @param string $id Id of the media item in the service
+     * @param string $url URL of the media item
+     * @return \ride\library\media\item\MediaItem
+     */
+    abstract protected function createMediaItem($id, $url = null);
+
 }

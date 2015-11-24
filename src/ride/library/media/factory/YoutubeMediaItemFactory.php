@@ -2,8 +2,8 @@
 
 namespace ride\library\media\factory;
 
-use \ride\library\http\client\Client;
 use ride\library\media\exception\MediaException;
+use ride\library\media\item\YoutubeMediaItem;
 
 /**
  * YoutubeMediaItemFactory
@@ -11,11 +11,11 @@ use ride\library\media\exception\MediaException;
 class YoutubeMediaItemFactory extends AbstractMediaItemFactory {
 
     /**
-     * {@inheritdoc}
+     * Gets the type of this factory
+     * @return string
      */
-    public function __construct(Client $httpClient) {
-        parent::__construct($httpClient);
-        $this->mediaItemClass = 'ride\library\media\item\YoutubeMediaItem';
+    public function getType() {
+        return YoutubeMediaItem::TYPE;
     }
 
     /**
@@ -26,14 +26,17 @@ class YoutubeMediaItemFactory extends AbstractMediaItemFactory {
     }
 
     /**
-     * {@inheritdoc}
+     * Creates a media item
+     * @param string $id Id of the media item in the service
+     * @param string $url URL of the media item
+     * @return \ride\library\media\item\MediaItem
      */
-    public function createFromUrl($url) {
+    protected function createMediaItem($id, $url = null) {
         if (!$this->clientId) {
-            throw new MediaException('google.api.key parameter not set');
+            throw new MediaException('Could not create media item: no google id set (google.api.key)');
         }
 
-        $mediaItem = parent::createFromUrl($url);
+        $mediaItem = new YoutubeMediaItem($this->httpClient, $id, $url);
         $mediaItem->setClientId($this->clientId);
 
         return $mediaItem;

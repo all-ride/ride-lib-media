@@ -2,7 +2,7 @@
 
 namespace ride\library\media\factory;
 
-use \ride\library\http\client\Client;
+use ride\library\media\item\VimeoMediaItem;
 
 /**
  * VimeoMediaItemFactory
@@ -10,11 +10,11 @@ use \ride\library\http\client\Client;
 class VimeoMediaItemFactory extends AbstractMediaItemFactory {
 
     /**
-     * {@inheritdoc}
+     * Gets the type of this factory
+     * @return string
      */
-    public function __construct(Client $httpClient) {
-        parent::__construct($httpClient);
-        $this->mediaItemClass = 'ride\library\media\item\VimeoMediaItem';
+    public function getType() {
+        return VimeoMediaItem::TYPE;
     }
 
     /**
@@ -26,4 +26,15 @@ class VimeoMediaItemFactory extends AbstractMediaItemFactory {
 
         return $filtered[0] === 'vimeo.com' && count($filtered === 2);
     }
+
+    /**
+     * Creates a media item
+     * @param string $id Id of the media item in the service
+     * @param string $url URL of the media item
+     * @return \ride\library\media\item\MediaItem
+     */
+    protected function createMediaItem($id, $url = null) {
+        return new VimeoMediaItem($this->httpClient, $id, $url);
+    }
+
 }

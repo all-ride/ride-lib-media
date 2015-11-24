@@ -2,8 +2,8 @@
 
 namespace ride\library\media\factory;
 
-use \ride\library\http\client\Client;
 use ride\library\media\exception\MediaException;
+use ride\library\media\item\SoundcloudMediaItem;
 
 /**
  * SoundcloudMediaItemFactory
@@ -11,11 +11,11 @@ use ride\library\media\exception\MediaException;
 class SoundcloudMediaItemFactory extends AbstractMediaItemFactory {
 
     /**
-     * {@inheritdoc}
+     * Gets the type of this factory
+     * @return string
      */
-    public function __construct(Client $httpClient) {
-        parent::__construct($httpClient);
-        $this->mediaItemClass = 'ride\library\media\item\SoundcloudMediaItem';
+    public function getType() {
+        return SoundcloudMediaItem::TYPE;
     }
 
     /**
@@ -26,16 +26,20 @@ class SoundcloudMediaItemFactory extends AbstractMediaItemFactory {
     }
 
     /**
-     * {@inheritdoc}
+     * Creates a media item
+     * @param string $id Id of the media item in the service
+     * @param string $url URL of the media item
+     * @return \ride\library\media\item\MediaItem
      */
-    public function createFromUrl($url) {
+    protected function createMediaItem($id, $url = null) {
         if (!$this->clientId) {
-            throw new MediaException('soundcloud.client.id parameter not set');
+            throw new MediaException('Could not create media item: no Soundcloud id set (soundcloud.client.id)');
         }
 
-        $mediaItem = parent::createFromUrl($url);
+        $mediaItem = new SoundcloudMediaItem($this->httpClient, $id, $url);
         $mediaItem->setClientId($this->clientId);
 
         return $mediaItem;
     }
+
 }

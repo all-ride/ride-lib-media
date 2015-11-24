@@ -50,18 +50,6 @@ interface MediaItem {
     public function isVideo();
 
     /**
-     * Gets whether this media item is from a video service
-     * @return boolean
-     */
-    public function isImage();
-
-    /**
-     * Gets whether this media item is from a video service
-     * @return boolean
-     */
-    public function IsPdf();
-
-    /**
      * Gets the id of this media item
      * @return string
      */

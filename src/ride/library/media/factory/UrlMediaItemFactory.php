@@ -2,7 +2,7 @@
 
 namespace ride\library\media\factory;
 
-use \ride\library\http\client\Client;
+use ride\library\media\item\UrlMediaItem;
 
 /**
  * MediaItemFactory for random URL's
@@ -10,12 +10,11 @@ use \ride\library\http\client\Client;
 class UrlMediaItemFactory extends AbstractMediaItemFactory {
 
     /**
-     * {@inheritdoc}
+     * Gets the type of this factory
+     * @return string
      */
-    public function __construct(Client $httpClient) {
-        parent::__construct($httpClient);
-
-        $this->mediaItemClass = 'ride\library\media\item\UrlMediaItem';
+    public function getType() {
+        return UrlMediaItem::TYPE;
     }
 
     /**
@@ -23,6 +22,16 @@ class UrlMediaItemFactory extends AbstractMediaItemFactory {
      */
     public function isValidUrl($url) {
         return true;
+    }
+
+    /**
+     * Creates a media item
+     * @param string $id Id of the media item in the service
+     * @param string $url URL of the media item
+     * @return \ride\library\media\item\MediaItem
+     */
+    protected function createMediaItem($id, $url = null) {
+        return new UrlMediaItem($this->httpClient, $id, $url);
     }
 
 }

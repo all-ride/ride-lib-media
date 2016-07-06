@@ -102,12 +102,12 @@ class VimeoMediaItem extends AbstractMediaItem {
     protected function loadProperties() {
         $properties = array();
 
-        $response = $this->httpClient->get('http://vimeo.com/api/v2/video/' . $this->id . '.json');
+        $response = $this->httpClient->get('https://vimeo.com/api/oembed.json?url=' . $this->getUrl() . '.json');
         if ($response->getStatusCode() == Response::STATUS_CODE_OK) {
             $jsonDecoded = json_decode($response->getBody(), true);
 
             if ($jsonDecoded !== false) {
-                $properties = $jsonDecoded[0];
+                $properties = $jsonDecoded;
             }
         }
 

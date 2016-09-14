@@ -92,7 +92,13 @@ class VimeoMediaItem extends AbstractMediaItem {
      * @return string
      */
     public function getThumbnailUrl(array $options = null) {
-        return $this->getProperty('thumbnail_large');
+        if (isset($this->properties['thumbnail_large'])) {
+            return $this->getProperty('thumbnail_large');
+        } elseif (isset($this->properties['thumbnail_url'])) {
+            return $this->getProperty('thumbnail_url');
+        }
+
+        return null;
     }
 
     /**
@@ -102,10 +108,9 @@ class VimeoMediaItem extends AbstractMediaItem {
     protected function loadProperties() {
         $properties = array();
 
-        $response = $this->httpClient->get('https://vimeo.com/api/oembed.json?url=' . $this->getUrl() . '.json');
+        $response = $this->httpClient->get('https://vimeo.com/api/oembed.json?url=' . $this->getUrl());
         if ($response->getStatusCode() == Response::STATUS_CODE_OK) {
             $jsonDecoded = json_decode($response->getBody(), true);
-
             if ($jsonDecoded !== false) {
                 $properties = $jsonDecoded;
             }

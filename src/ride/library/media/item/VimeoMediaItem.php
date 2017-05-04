@@ -92,13 +92,12 @@ class VimeoMediaItem extends AbstractMediaItem {
      * @return string
      */
     public function getThumbnailUrl(array $options = null) {
-        if (isset($this->properties['thumbnail_large'])) {
-            return $this->getProperty('thumbnail_large');
-        } elseif (isset($this->properties['thumbnail_url'])) {
-            return $this->getProperty('thumbnail_url');
+        $thumbnail = $this->getProperty('thumbnail_large');
+        if (!$thumbnail) {
+            $thumbnail = $this->getProperty('thumbnail_url');
         }
 
-        return null;
+        return $thumbnail;
     }
 
     /**

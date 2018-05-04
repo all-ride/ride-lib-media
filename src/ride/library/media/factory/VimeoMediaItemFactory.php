@@ -24,7 +24,7 @@ class VimeoMediaItemFactory extends AbstractMediaItemFactory {
         $filtered = str_replace(array('http://', 'www.', 'https://'), '', $url);
         $filtered = explode('/', $filtered);
 
-        return $filtered[0] === 'vimeo.com' && count($filtered === 2);
+        return $filtered[0] === 'vimeo.com' && count($filtered) === 2;
     }
 
     /**

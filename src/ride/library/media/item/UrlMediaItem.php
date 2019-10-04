@@ -115,10 +115,19 @@ class UrlMediaItem extends AbstractMediaItem {
      * @return array
      */
     protected function loadProperties() {
-        $request = $this->httpClient->createRequest('HEAD', $this->getId());
-        $request->setFollowLocation(true);
+        $url = $this->getId();
+        $counter = 0;
 
-        $response = $this->httpClient->sendRequest($request);
+        do {
+            $request = $this->httpClient->createRequest('HEAD', $url);
+            $response = $this->httpClient->sendRequest($request);
+            $counter++;
+
+            if ($response->willRedirect()) {
+                $url = $response->getLocation();
+            }
+        } while (!$response->isOk() && $counter < 5);
+
         if (!$response->isOk()) {
             return array('title' => $this->getId());
         }
